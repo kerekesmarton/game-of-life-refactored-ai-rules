@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+---
+
+# Conway's Game of Life - Development Rules Overview
+
+This workspace follows a comprehensive set of development rules based on cost-benefit analysis and practical experience. The rules are organized into focused modules that work together to maintain high code quality.
+
+## Rule Organization
+
+### Core Rules (Always Applied)
+- **[code-principles.mdc]** - Core principles for all development
+- **[testing.mdc](testing.mdc)** - Testing strategy for new development and adding new code before refactoring alike.
+- **[refactoring.mdc](refactoring.mdc)** - Refactoring rules with ROI analysis
+- **[object-calisthenics.mdc](object-calisthenics.mdc)** - Pragmatic OOP guidelines
+- **[code-smells.mdc](code-smells.mdc)** - Code smell detection and remediation
+
+## Quality Gates
+- All tests must pass before committing
+- No linting errors
+- Documentation updated for public interfaces

@@ -1,0 +1,62 @@
+---
+alwaysApply: false
+---
+
+# Refactoring and Code Quality Principles
+
+- **Detect code smells** Check for [code-smells.mdc](code-smells.mdc) and decide decide what to fix based on ROI. Use as guidelines, not absolute rules.
+- **Analyse [object-calisthenics.mdc](object-calisthenics.mdc)** and decide what to fix based on ROI. Use as guidelines, not absolute rules.
+- **Never change production code that is not covered by tests** See [testing.mdc](testing.mdc)
+- **Refactoring principles** Written code should adhere to our [Core Principles](core-principles.mdc). Focus on high-ROI refactoring first. Measure impact of changes on maintainability
+
+## High-Value Refactoring (Strong ROI) ⭐⭐⭐⭐⭐
+
+### 1. Single Responsibility Principle (SRP)
+- **Target**: < 50 lines per class, < 15 lines per method
+- **Benefit**: Easier maintenance, testing, debugging
+- **Cost**: Medium (class extraction)
+- **Apply**: Extract classes when responsibilities diverge
+
+### 2. Eliminate Primitive Obsession
+- **Target**: Wrap primitives in meaningful domain classes
+- **Benefit**: Better domain modeling and expressiveness
+- **Cost**: Low (simple wrapper classes)
+- **Apply**: Create domain objects like Cell, Position, GridSize
+
+### 3. Extract Magic Numbers and Constants
+- **Target**: Centralize all constants in configuration classes
+- **Benefit**: Easy configuration changes, maintainability
+- **Cost**: Very Low (constant extraction)
+- **Apply**: Move all magic numbers to [game_config.py](mdc:game_config.py)
+
+### 4. Remove Duplication (DRY)
+- **Target**: Eliminate duplicated code across locations
+- **Benefit**: Single source of truth, easier maintenance
+- **Cost**: Moderate (extraction and consolidation)
+- **Apply**: Extract common behavior into shared methods/classes
+
+### 5. First-Class Collections
+- **Target**: Wrap collections in dedicated classes with behavior
+- **Benefit**: Better encapsulation and domain-specific operations
+- **Cost**: Medium (wrapper class creation)
+- **Apply**: Grid class wrapping 2D array with neighbor operations
+
+## Medium to Low-value Refactoring ⭐⭐⭐
+
+1. **Object Calisthenics (Selective)** - Apply when beneficial, not strictly. Can create more complexity than they remove
+2. **Extreme Method Decomposition** - "Ravioli code" hurts readability
+3. **Primitive Wrapping**: Low cost, high value when applied to domain concepts
+
+
+## Cohesion and Coupling
+- **Maximize Cohesion**: Related responsibilities should be together
+- **Minimize Coupling**: Reduce interdependence between classes
+- **Avoid Feature Envy**: Don't use other classes excessively
+- **Prefer Composition**: Over inheritance when possible
+
+
+## Anti-Patterns to Avoid
+- **Over-Engineering**: Don't apply rules that reduce readability
+- **Rule Worship**: Follow rules pragmatically, not blindly
+- **Ravioli Code**: Too many tiny classes hurt understanding
+- **Premature Optimization**: Focus on clarity first

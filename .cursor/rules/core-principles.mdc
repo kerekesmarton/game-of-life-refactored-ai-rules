@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+---
+
+# Core Principles
+- **KISS**: Keep it simple. Prefer clarity over cleverness.
+- **DRY**: Don't repeat yourself. Remove code duplication.
+- **YAGNI**: You aren't gonna need it.
+- **Tell, Don't Ask**: Objects should manage their own state
+- **SOLID** Principles:
+    - **SRP**: Single Responsibility Principle
+    - **OCP**: Open Closed Principle
+    - **LSP**: Liskov Substitution Principle
+    - **DI** Dependency inversion Principle
+    - **IS** Interface Segregation Principle
+
+# Remove Complexity
+
+## Code Cleanup
+- **Format the code** consistently
+- **Delete dead code** immediately
+- **Delete useless comments** that explain "what" instead of "why"
+- **Delete unnecessary code** that doesn't add value
+
+## Complexity Reduction
+- **Rename bad names** to express intent clearly
+- **Extract smaller methods** from long methods
+- **Return early** from methods to reduce nesting
+- **Extract methods** from deep conditionals
+- **Extract constants** from magic numbers and strings
+- **Refine scope** for improper variables or statements
+- **Encapsulate** where missing encapsulation is found
+
+## Remove Cleverness
+- **Make abbreviated code explicit**
+- **Encapsulate cryptic code** in well-named methods
+- **Prefer clear, readable code** over clever implementations

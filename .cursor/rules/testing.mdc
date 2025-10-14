@@ -1,0 +1,158 @@
+---
+globs: *.py
+alwaysApply: false
+---
+
+## Testing Principles
+- **Tests are first class citizens** Tests are the foundation for safe refactoring and maintenance.
+- **Core principles** Written code should adhere to our [Core Principles](core-principles.mdc)
+- **Use [object-calisthenics.mdc](object-calisthenics.mdc)** as a guide for code written
+
+
+## Testing Strategy
+
+### When adding tests to existing code, follow this progression:
+
+1. **Characterization Tests (Late Unit Tests)**
+   - Start with tests that capture current behavior
+   - Use these to understand what the code actually does
+   - Essential before any refactoring
+
+2. **Golden Master Tests / Approval Based Tests**
+   - Capture complete system behavior
+   - Use for regression testing
+   - Validate that refactoring doesn't break functionality
+
+3. **Model Based Tests**
+   - Test business logic and domain models
+   - Focus on core algorithms and rules
+   - Ensure domain integrity
+
+4. **Property Based Tests**
+   - Test edge cases and boundary conditions
+   - Validate invariants and properties
+   - Catch unexpected behaviors
+
+### When writing a new feature 
+1. **Use TDD when it makes sense** - Apply Transformation Priority Premises
+2. **Unit Tests** - Test class behaviour not implementation detail.
+3. **Integration Tests** - Test component interactions
+
+## Test Quality Guidelines
+- Write tests that are easy to understand and maintain
+- Use descriptive test names that explain the scenario
+- Keep tests focused on one behavior at a time
+- Prefer simple, readable test code over clever implementations
+- Ensure tests run fast and are deterministic
+
+# Transformation Priority Premises
+
+## TDD Implementation Strategy
+Use red-green-blue progression. Write failing test, solve code that makes test pass, refactor following these transformation priorities in order:
+
+## 1. Fake Implementation
+**When to use**: When you hardcode exactly the value you need to pass the test
+
+**Purpose**: 
+- Get the test passing quickly
+- Establish the interface and behavior
+- Avoid over-engineering
+
+**Example**:
+```python
+def count_live_neighbors(self, row, col):
+    return 3  # Hardcoded to pass the test
+```
+
+**Guidelines**:
+- Use this when you're unsure of the implementation
+- Don't worry about correctness yet
+- Focus on making the test pass
+
+## 2. Obvious Implementation
+**When to use**: When you are sure of the code you need to write
+
+**Purpose**:
+- Move forward quickly with known solutions
+- Implement straightforward logic
+- Most commonly used approach
+
+**Example**:
+```python
+def count_live_neighbors(self, row, col):
+    count = 0
+    for neighbor in self.get_neighbors(row, col):
+        if neighbor.is_alive():
+            count += 1
+    return count
+```
+
+**Guidelines**:
+- Use when the implementation is clear and straightforward
+- Don't overthink simple solutions
+- This is your default approach for most cases
+
+## 3. Triangulation
+**When to use**: When you want to generalize behavior but are unsure how
+
+**Purpose**:
+- Force code to become more generic
+- Discover the general pattern through multiple test cases
+- Complete one dimension before moving to the next
+
+**Process**:
+1. Start with fake implementation
+2. Add more test cases with different inputs
+3. Each test forces the code to be more generic
+4. Continue until the pattern emerges
+
+**Example**:
+```python
+# Test 1: count_live_neighbors returns 3
+def count_live_neighbors(self, row, col):
+    return 3
+
+# Test 2: count_live_neighbors returns 2 for different position
+def count_live_neighbors(self, row, col):
+    if row == 0 and col == 0:
+        return 3
+    return 2
+
+# Test 3: Forces general implementation
+def count_live_neighbors(self, row, col):
+    count = 0
+    for neighbor in self.get_neighbors(row, col):
+        if neighbor.is_alive():
+            count += 1
+    return count
+```
+
+## Application Guidelines
+
+### When to Use Each Approach
+- **Fake Implementation**: Uncertain about implementation, exploring interface
+- **Obvious Implementation**: Clear solution, straightforward logic
+- **Triangulation**: Need to discover general pattern, multiple test cases required
+
+### Triangulation Strategy
+1. **Complete One Dimension First**: Don't try to solve everything at once
+2. **Add Test Cases Gradually**: Each test should force one more generalization
+3. **Stop When Pattern Emerges**: Don't over-triangulate
+4. **Use Edge Cases**: Boundary conditions help discover the full pattern
+
+### Common Mistakes to Avoid
+- **Over-Triangulation**: Don't add unnecessary test cases
+- **Premature Generalization**: Don't generalize before understanding the pattern
+- **Skipping Fake Implementation**: Sometimes the simplest approach is best
+- **Ignoring Obvious Implementation**: Don't overthink simple solutions
+
+## Integration with Refactoring
+- Use these premises during the **Red-Green-Refactor** cycle
+- **Red**: Write failing test
+- **Green**: Use appropriate transformation premise
+- **Refactor**: Clean up the implementation while keeping tests green
+
+## Cost-Benefit Analysis
+- **Fake Implementation**: Low cost, high speed, temporary solution
+- **Obvious Implementation**: Medium cost, high speed, permanent solution
+- **Triangulation**: High cost, slower, discovers robust patterns
