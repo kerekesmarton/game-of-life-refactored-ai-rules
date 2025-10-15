@@ -1,0 +1,297 @@
+---
+alwaysApply: true
+---
+
+# Code Quality Guide
+Unified guide for detecting and fixing code quality issues, organized by ROI and priority.
+
+---
+
+## ⭐⭐⭐⭐⭐ Critical (Fix Immediately / Very High ROI)
+
+### Primitive Obsession / Wrap Primitives
+- **Detection**:
+  - Primitives representing domain concepts (boolean for cell state, tuples for coordinates)
+  - 3+ primitive parameters in methods
+  - Type confusion risks (mixing row/col, x/y)
+- **Fix**: Wrap in domain/model classes (Cell, Position, Coordinate, etc.)
+- **Exception**: Simple counters and basic arithmetic can remain primitive
+- **Guideline**: 2 primitives as parameters OK, 3+ should consider wrapping
+- **Violations**: Coupling, Connascence of meaning
+- **ROI**: Very High - improves type safety, expressiveness, and prevents bugs
+
+### Duplicated Code (DRY Violation)
+- **Detection**:
+  - Identical or very similar code in multiple locations
+  - Copy-paste patterns
+  - Same switch statement scattered across classes
+- **Fix**: Extract common functionality into shared methods/classes
+- **Violations**: DRY, Cohesion
+- **ROI**: Very High - reduces maintenance burden and bug surface area
+
+### First-Class Collections
+- **Detection**:
+  - Raw arrays/lists passed around without behavior
+  - Collection manipulation logic scattered across codebase
+  - Repeated iteration patterns
+- **Fix**: Wrap collections with domain-specific behavior
+- **Example**: Grid class wrapping 2D array with neighbor operations
+- **Violations**: Coupling, Cohesion
+- **ROI**: Very High - better encapsulation and domain modeling
+
+### Large Class (God Class)
+- **Detection**:
+  - Classes with too many responsibilities
+  - Classes changed for different reasons (Divergent Change)
+  - Classes > 50 lines
+- **Fix**: Extract classes when responsibilities diverge
+- **Violations**: SRP, OCP, Cohesion
+- **ROI**: Very High - improves maintainability and testability
+
+### Long Method
+- **Detection**:
+  - Methods doing more than one thing
+  - Methods > 15 lines
+  - Methods with multiple levels of indentation
+- **Fix**: Extract smaller, focused methods with single responsibility
+- **Violations**: SRP, Cohesion
+- **ROI**: Very High - improves readability and testability
+
+---
+
+## ⭐⭐⭐⭐ High Priority (High ROI / Address Soon)
+
+### Long Parameter List
+- **Guidelines**:
+  - 0 (niladic) = Ideal
+  - 1 (monadic) = Good
+  - 2 (dyadic) = Acceptable
+  - 3 (triadic) = Debatable (avoid if possible)
+  - 3+ (polyadic) = Only with special justification
+- **Detection**: Methods with 3+ parameters
+- **Fix**: Extract parameter objects, reduce parameters
+- **Exception**: Simple utility methods may need more parameters
+- **Violations**: Coupling, Connascence of position
+- **ROI**: High - reduces complexity and improves clarity
+
+### Feature Envy (Law of Demeter at a class level)
+- **Detection**:
+  - Class uses methods/properties of another class excessively
+  - Logic that belongs with data is elsewhere
+- **Fix**: Move behavior to the class that owns the data
+- **Violations**: Tell Don't Ask, Cohesion, Coupling
+- **ROI**: High - better encapsulation and maintainability
+
+### Data Clumps
+- **Detection**:
+  - Same data items appear together in multiple places
+  - Repeated parameter patterns
+- **Fix**: Group related data into objects
+- **Violations**: DRY, Cohesion
+- **ROI**: High - improves cohesion and reduces duplication
+
+### Dead Code / Speculative Generality
+- **Detection**:
+  - Code with no references
+  - Commented-out code
+  - Unused classes, methods, fields, or parameters
+- **Fix**: Delete immediately
+- **Guideline**: "Deleted code has no bugs and improves readability"
+- **Violations**: YAGNI, Cohesion
+- **ROI**: High - improves clarity, reduces cognitive load
+
+### Clear Naming / No Abbreviations
+- **Detection**:
+  - Abbreviated names that hurt readability
+  - Names that don't express intent
+  - Unclear variable/method names
+- **Fix**: Rename to express intent clearly
+- **Examples**: `is_alive()` not `is_alv()`, `count_neighbors()` not `cnt_nbrs()`
+- **Violations**: KISS
+- **ROI**: High - dramatically improves code comprehension
+
+---
+
+## ⭐⭐⭐ Medium Priority (Medium ROI / Apply When Beneficial)
+
+### Message Chains (Law of Demeter at function level)
+- **Detection**: Too many dots: `dog.Body.Tail.Wag()`
+- **Fix**: Encapsulate: `dog.ExpressHappiness()`
+- **Exception**: Don't create artificial methods just to avoid dots
+- **Guideline**: Apply when it improves readability
+- **Violations**: Law of Demeter, Coupling
+- **ROI**: Medium - reduces coupling when applied judiciously
+
+### No Public Getters/Setters/Properties
+- **Detection**:
+  - Classes exposing internal state
+  - External code manipulating object internals
+- **Fix**: Encapsulate data access through behavior methods
+- **Exception**: Simple data transfer objects may need getters
+- **Guideline**: Prefer methods that express intent over simple accessors
+- **Violations**: Tell Don't Ask, Encapsulation
+- **ROI**: Medium - better encapsulation, easier to change
+
+### Switch Statements (Type-Based Dispatch)
+- **Detection**:
+  - Same switch statement scattered in different places
+  - Type checking followed by different behaviors
+- **Fix**: Consider polymorphism or strategy pattern
+- **Exception**: Single, localized switch may be clearer than polymorphism. 
+- **Exception**: Some languages promote switch statements, i.e. `swift`, combined with accessors.
+- **Violations**: DRY, OCP
+- **ROI**: Medium - improves extensibility when polymorphism fits
+
+### Shotgun Surgery
+- **Detection**: One change forces many small changes across classes
+- **Fix**: Consolidate related functionality
+- **Violations**: DRY, Coupling
+- **ROI**: Medium - reduces change impact
+
+### Data Class (Anaemic Classes)
+- **Detection**:
+  - Classes with only fields, no behavior
+  - All logic elsewhere operating on the data
+- **Fix**: Add behavior or eliminate the class
+- **Exception**: DTOs and value objects may be acceptable
+- **Violations**: Cohesion, Tell Don't Ask
+- **ROI**: Medium - better domain modeling
+
+---
+
+## ⭐⭐ Low Priority (Low ROI / Monitor and Address)
+
+### Deep Nesting / One Level of Indentation
+- **Detection**:
+  - Deep conditional nesting
+  - Multiple levels of loops
+- **Fix**:
+  - Return early from methods
+  - Extract methods from deep conditionals
+- **Exception**: Don't create many tiny methods that hurt flow
+- **Guideline**: Prefer early returns over deep nesting
+- **ROI**: Low - only apply when it improves readability
+
+### Else Keyword
+- **Detection**: Else clauses that could be early returns
+- **Fix**: Use early returns or guard clauses
+- **Exception**: Sometimes else makes intent clearer
+- **Guideline**: Use judgment based on readability
+- **ROI**: Low - marginal improvement, context-dependent
+
+### Useless Comments
+- **Detection**:
+  - Comments explaining "what" instead of "why"
+  - Comments that duplicate code
+- **Fix**: Create self-documenting code instead
+- **Exception**: Keep comments explaining "why" decisions were made
+- **Violations**: KISS
+- **ROI**: Low - cleanup helps but not critical
+
+### Middle Man
+- **Detection**: Class delegating all its work
+- **Fix**: Cut out the middleman or add real behavior
+- **Violations**: Cohesion
+- **ROI**: Low - simplification helps but rarely critical
+
+### Inappropriate Intimacy
+- **Detection**: Dependencies on implementation details of another class
+- **Fix**: Reduce coupling through proper interfaces
+- **Violations**: Coupling
+- **ROI**: Low to Medium - depends on rate of change
+
+---
+
+## ⭐ Questionable (Avoid Strict Enforcement / Negative ROI)
+
+### Two Instance Variables Per Class
+- **Original Rule**: No classes with more than two instance variables
+- **Reality**: Extremely high cost, leads to "ravioli code"
+- **Guideline**: Use as a warning sign, not a strict rule
+- **Exception**: Domain objects naturally need more state
+- **ROI**: Negative - creates unnecessary complexity
+
+### Five Lines Per Method
+- **Original Rule**: Maximum 5 lines per method
+- **Reality**: High cost, creates many small methods
+- **Guideline**: Use 15 lines as a more practical limit
+- **Exception**: Some methods naturally need more lines for clarity
+- **ROI**: Negative to Low - extreme splitting hurts readability
+
+### Alternative Classes with Different Interfaces
+- **Detection**: Similar classes with different interfaces
+- **Fix**: Create common interface or merge classes
+- **Guideline**: Only unify if classes truly represent same concept
+- **ROI**: Low - only worth it if causing real duplication
+
+### Refused Bequest
+- **Detection**: Subclass using only some inherited methods
+- **Fix**: Use composition instead of inheritance
+- **Guideline**: Evaluate case by case
+- **Violations**: LSP
+- **ROI**: Low - only fix if causing real problems
+
+---
+
+## Anti-Patterns to Avoid
+
+### Ravioli Code
+- **Problem**: Too many tiny classes that hurt understanding
+- **Cause**: Over-applying decomposition rules
+- **Solution**: Maintain balance between cohesion and readability
+
+### Artificial Methods
+- **Problem**: Methods created just to satisfy rules
+- **Cause**: Following rules blindly
+- **Solution**: Create methods only when they add clarity
+
+### Over-Abstraction
+- **Problem**: Creating complexity where simplicity is better
+- **Cause**: Premature optimization or rule worship
+- **Solution**: YAGNI - implement only what's needed
+
+### Rule Worship
+- **Problem**: Following rules blindly without considering readability
+- **Cause**: Treating guidelines as laws
+- **Solution**: Use judgment - rules are guidelines, not absolutes
+
+---
+
+## Pragmatic Application Strategy
+
+### 1. Start with Critical Issues (⭐⭐⭐⭐⭐)
+- **Focus**: Primitive obsession, duplication, first-class collections
+- **Impact**: Immediate improvement in type safety and maintainability
+- **Frequency**: Fix during active development
+
+### 2. Address High Priority (⭐⭐⭐⭐)
+- **Focus**: Parameter lists, feature envy, dead code
+- **Impact**: Significant improvement in clarity
+- **Frequency**: Fix when touching related code
+
+### 3. Apply Medium Priority When Beneficial (⭐⭐⭐)
+- **Focus**: Message chains, encapsulation, polymorphism
+- **Impact**: Improves design when genuinely helpful
+- **Frequency**: During refactoring sessions
+
+### 4. Monitor Low Priority (⭐⭐)
+- **Focus**: Nesting, comments, middleman
+- **Impact**: Minor improvements
+- **Frequency**: Address opportunistically
+
+### 5. Avoid Questionable Rules (⭐)
+- **Focus**: Extreme decomposition rules
+- **Impact**: Often negative
+- **Frequency**: Ignore or use as warning signs only
+
+---
+
+## Cost-Benefit Summary
+
+| Priority | ROI | Apply When | Examples |
+|----------|-----|------------|----------|
+| ⭐⭐⭐⭐⭐ | Very High | Immediately | Primitive wrapping, DRY, First-class collections |
+| ⭐⭐⭐⭐ | High | Soon | Parameter reduction, Dead code, Clear naming |
+| ⭐⭐⭐ | Medium | When beneficial | Method extraction, Encapsulation |
+| ⭐⭐ | Low | Opportunistically | Nesting reduction, Comment cleanup |
+| ⭐ | Negative to Low | Rarely/Never | Extreme decomposition, Artificial constraints |

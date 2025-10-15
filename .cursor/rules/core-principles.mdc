@@ -3,35 +3,85 @@ alwaysApply: true
 ---
 
 # Core Principles
-- **KISS**: Keep it simple. Prefer clarity over cleverness.
-- **DRY**: Don't repeat yourself. Remove code duplication.
-- **YAGNI**: You aren't gonna need it.
-- **Tell, Don't Ask**: Objects should manage their own state
-- **SOLID** Principles:
-    - **SRP**: Single Responsibility Principle
-    - **OCP**: Open Closed Principle
-    - **LSP**: Liskov Substitution Principle
-    - **DI** Dependency inversion Principle
-    - **IS** Interface Segregation Principle
 
-# Remove Complexity
+These foundational principles guide all code quality decisions. For detailed detection and fixing strategies, see `code-quality-guide.mdc`.
 
-## Code Cleanup
-- **Format the code** consistently
+## Foundational Principles
+
+### KISS (Keep It Simple, Stupid)
+- Prefer clarity over cleverness
+- Write code that's easy to understand
+- Remove unnecessary complexity
+
+### DRY (Don't Repeat Yourself)
+- Remove code duplication
+- Each piece of knowledge should have a single representation
+- See: Duplicated Code in code-quality-guide.mdc
+
+### YAGNI (You Aren't Gonna Need It)
+- Implement only what's needed now
+- Delete speculative code
+- See: Speculative Generality in code-quality-guide.mdc
+
+### Tell, Don't Ask
+- Objects should manage their own state
+- Don't ask for data and act on it - tell objects what to do
+- See: Feature Envy in code-quality-guide.mdc
+
+### SOLID Principles
+- **SRP**: Single Responsibility Principle
+- **OCP**: Open Closed Principle
+- **LSP**: Liskov Substitution Principle
+- **DI**: Dependency Inversion Principle
+- **IS**: Interface Segregation Principle
+
+---
+
+## Quality Assurance Process
+
+### During Development
+1. **[Write Tests](testing.mdc)** using TDD when it makes sense, otherwise write unit and integration tests
+2. **Format code** consistently
+3. **Delete dead code** immediately
+4. **Extract constants** from magic numbers/strings
+5. **Refine scope** for variables and statements
+
+### During Code Review
+1. **Regular reviews** for smell patterns
+2. **Test coverage** check before refactoring
+3. **Refactoring triggers** - address smells when touching code
+
+### During Refactoring
+1. **Do not make changes to production code without proper test coverage**
+2. **Incremental improvement** - fix smells gradually
+3. **Measure impact** - ensure refactoring improves maintainability
+4. **Maintain tests** - keep tests green throughout
+
+
+## Quick Reference for Code Quality checks and their ROI
+
+For ** Detailed Strategies** with ROI ratings, see `code-quality-guide.mdc`.
+
+### Immediate Actions (⭐⭐⭐⭐⭐)
 - **Delete dead code** immediately
-- **Delete useless comments** that explain "what" instead of "why"
-- **Delete unnecessary code** that doesn't add value
-
-## Complexity Reduction
+- **Wrap primitives** in domain classes
+- **Extract duplicated code** into shared methods
 - **Rename bad names** to express intent clearly
-- **Extract smaller methods** from long methods
+
+### Regular Actions (⭐⭐⭐⭐)
+- **Extract smaller methods** from long methods (< 18-25 lines) #Adapt to language and code base
+- **Split large classes** into focused classes (< 50 lines) #Adapt to language and code base
+- **Reduce parameter lists** (aim for 0-2 parameters)
+- **Format code** consistently
+
+### Opportunistic Actions (⭐⭐⭐)
 - **Return early** from methods to reduce nesting
 - **Extract methods** from deep conditionals
 - **Extract constants** from magic numbers and strings
-- **Refine scope** for improper variables or statements
 - **Encapsulate** where missing encapsulation is found
+- **Delete useless comments** that explain "what" instead of "why"
 
-## Remove Cleverness
-- **Make abbreviated code explicit**
-- **Encapsulate cryptic code** in well-named methods
-- **Prefer clear, readable code** over clever implementations
+### Avoid
+- **Clever implementations** over clear, readable code
+- **Premature optimization** or over-abstraction
+- **Following rules blindly** - use judgment for readability
