@@ -4,8 +4,7 @@ alwaysApply: false
 
 # Refactoring and Code Quality Principles
 
-- **Detect code smells** Check for [code-smells.mdc](code-smells.mdc) and decide decide what to fix based on ROI. Use as guidelines, not absolute rules.
-- **Analyse [object-calisthenics.mdc](object-calisthenics.mdc)** and decide what to fix based on ROI. Use as guidelines, not absolute rules.
+- **Detect code quality issues** Check [code-quality-guide.mdc](code-quality-guide.mdc) for code smells, object calisthenics, and other quality issues. Decide what to fix based on ROI. Use as guidelines, not absolute rules.
 - **Never change production code that is not covered by tests** See [testing.mdc](testing.mdc)
 - **Refactoring principles** Written code should adhere to our [Core Principles](core-principles.mdc). Focus on high-ROI refactoring first. Measure impact of changes on maintainability
 

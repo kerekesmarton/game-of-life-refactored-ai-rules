@@ -6,7 +6,7 @@ alwaysApply: false
 ## Testing Principles
 - **Tests are first class citizens** Tests are the foundation for safe refactoring and maintenance.
 - **Core principles** Written code should adhere to our [Core Principles](core-principles.mdc)
-- **Use [object-calisthenics.mdc](object-calisthenics.mdc)** as a guide for code written
+- **Use [code-quality-guide.mdc](code-quality-guide.mdc)** as a guide for code quality
 
 
 ## Testing Strategy

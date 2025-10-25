@@ -12,8 +12,7 @@ This workspace follows a comprehensive set of development rules based on cost-be
 - **[code-principles.mdc]** - Core principles for all development
 - **[testing.mdc](testing.mdc)** - Testing strategy for new development and adding new code before refactoring alike.
 - **[refactoring.mdc](refactoring.mdc)** - Refactoring rules with ROI analysis
-- **[object-calisthenics.mdc](object-calisthenics.mdc)** - Pragmatic OOP guidelines
-- **[code-smells.mdc](code-smells.mdc)** - Code smell detection and remediation
+- **[code-quality-guide.mdc](code-quality-guide.mdc)** - Code quality guide with ROI-based priorities (unified code smells and object calisthenics)
 
 ## Quality Gates
 - All tests must pass before committing
