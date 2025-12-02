@@ -4,17 +4,51 @@ alwaysApply: true
 
 # Conway's Game of Life - Development Rules Overview
 
-This workspace follows a comprehensive set of development rules based on cost-benefit analysis and practical experience. The rules are organized into focused modules that work together to maintain high code quality.
+This workspace follows a comprehensive set of development rules based on cost-benefit analysis and practical experience. The rules are organized into focused, non-duplicative modules that work together to maintain high code quality.
+
+---
 
 ## Rule Organization
 
 ### Core Rules (Always Applied)
-- **[code-principles.mdc]** - Core principles for all development
-- **[testing.mdc](testing.mdc)** - Testing strategy for new development and adding new code before refactoring alike.
-- **[refactoring.mdc](refactoring.mdc)** - Refactoring rules with ROI analysis
-- **[code-quality-guide.mdc](code-quality-guide.mdc)** - Code quality guide with ROI-based priorities (unified code smells and object calisthenics)
+
+1. **[core-principles.mdc](core-principles.mdc)** - Foundational principles and quality processes
+   - KISS, DRY, YAGNI, Tell Don't Ask, SOLID
+   - Quality assurance processes for development, review, and refactoring
+   - Application strategy with priority order
+
+2. **[code-quality-guide.mdc](code-quality-guide.mdc)** - Comprehensive code quality reference
+   - ROI-based prioritization (⭐⭐⭐⭐⭐ to ⭐)
+   - Detection and fixing strategies for all code smells
+   - Unified guide covering code smells, object calisthenics, and complexity issues
+   - **This is the authoritative source for WHAT to look for and fix**
+
+3. **[testing.mdc](testing.mdc)** - Testing strategy and TDD guidance
+   - Testing strategy for existing code (characterization, golden master, model-based, property-based)
+   - Testing strategy for new features (TDD, unit tests, integration tests)
+   - Transformation Priority Premises for TDD implementation
+
+4. **[refactoring.mdc](refactoring.mdc)** - Refactoring workflow and when/how guidance
+   - Core refactoring rules (safety first, follow principles, ROI-driven)
+   - When to refactor (before features, during review, opportunistically)
+   - How to refactor (identify, test, increment, verify)
+   - Design principles (cohesion, coupling, balance)
+   - **This is the guide for WHEN and HOW to refactor**
+
+---
+
+## How to Use These Rules
+
+1. **Starting Development**: Review [core-principles.mdc](core-principles.mdc) for foundational principles
+2. **Writing Code**: Follow [testing.mdc](testing.mdc) for test-driven development
+3. **Code Review**: Use [code-quality-guide.mdc](code-quality-guide.mdc) to identify issues by ROI
+4. **Refactoring**: Follow [refactoring.mdc](refactoring.mdc) workflow with [code-quality-guide.mdc](code-quality-guide.mdc) as reference
+
+---
 
 ## Quality Gates
+
 - All tests must pass before committing
 - No linting errors
+- Critical code quality issues (⭐⭐⭐⭐⭐) addressed
 - Documentation updated for public interfaces

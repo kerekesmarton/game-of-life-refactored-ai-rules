@@ -2,60 +2,113 @@
 alwaysApply: false
 ---
 
-# Refactoring and Code Quality Principles
+# Refactoring Workflow and Strategy
 
-- **Detect code quality issues** Check [code-quality-guide.mdc](code-quality-guide.mdc) for code smells, object calisthenics, and other quality issues. Decide what to fix based on ROI. Use as guidelines, not absolute rules.
-- **Never change production code that is not covered by tests** See [testing.mdc](testing.mdc)
-- **Refactoring principles** Written code should adhere to our [Core Principles](core-principles.mdc). Focus on high-ROI refactoring first. Measure impact of changes on maintainability
+This guide focuses on **when** and **how** to refactor. For **what** to look for and fix, see [code-quality-guide.mdc](code-quality-guide.mdc).
 
-## High-Value Refactoring (Strong ROI) ⭐⭐⭐⭐⭐
+---
 
-### 1. Single Responsibility Principle (SRP)
-- **Target**: < 50 lines per class, < 15 lines per method
-- **Benefit**: Easier maintenance, testing, debugging
-- **Cost**: Medium (class extraction)
-- **Apply**: Extract classes when responsibilities diverge
+## Core Refactoring Rules
 
-### 2. Eliminate Primitive Obsession
-- **Target**: Wrap primitives in meaningful domain classes
-- **Benefit**: Better domain modeling and expressiveness
-- **Cost**: Low (simple wrapper classes)
-- **Apply**: Create domain objects like Cell, Position, GridSize
+### 1. Safety First
+- **NEVER change production code that is not covered by tests** - See [testing.mdc](testing.mdc)
+- Ensure all tests pass before starting refactoring
+- Keep tests green throughout the refactoring process
+- Run tests after each small change
 
-### 3. Extract Magic Numbers and Constants
-- **Target**: Centralize all constants in configuration classes
-- **Benefit**: Easy configuration changes, maintainability
-- **Cost**: Very Low (constant extraction)
-- **Apply**: Move all magic numbers to [game_config.py](mdc:game_config.py)
+### 2. Follow Core Principles
+- Written code should adhere to [Core Principles](core-principles.mdc)
+- Use KISS, DRY, YAGNI, Tell Don't Ask, and SOLID as guides
+- Let principles inform decisions, don't apply them blindly
 
-### 4. Remove Duplication (DRY)
-- **Target**: Eliminate duplicated code across locations
-- **Benefit**: Single source of truth, easier maintenance
-- **Cost**: Moderate (extraction and consolidation)
-- **Apply**: Extract common behavior into shared methods/classes
+### 3. ROI-Driven Approach
+- Focus on high-ROI refactoring first (⭐⭐⭐⭐⭐ issues in [code-quality-guide.mdc](code-quality-guide.mdc))
+- Measure impact of changes on maintainability
+- Use cost-benefit analysis to prioritize refactoring work
+- Use as guidelines, not absolute rules
 
-### 5. First-Class Collections
-- **Target**: Wrap collections in dedicated classes with behavior
-- **Benefit**: Better encapsulation and domain-specific operations
-- **Cost**: Medium (wrapper class creation)
-- **Apply**: Grid class wrapping 2D array with neighbor operations
+---
 
-## Medium to Low-value Refactoring ⭐⭐⭐
+## Refactoring Workflow
 
-1. **Object Calisthenics (Selective)** - Apply when beneficial, not strictly. Can create more complexity than they remove
-2. **Extreme Method Decomposition** - "Ravioli code" hurts readability
-3. **Primitive Wrapping**: Low cost, high value when applied to domain concepts
+### When to Refactor
 
+1. **Before Adding Features**
+   - Clean up the area where you'll add new code
+   - Address blocking code smells that would make the feature harder
 
-## Cohesion and Coupling
-- **Maximize Cohesion**: Related responsibilities should be together
-- **Minimize Coupling**: Reduce interdependence between classes
-- **Avoid Feature Envy**: Don't use other classes excessively
-- **Prefer Composition**: Over inheritance when possible
+2. **During Code Review**
+   - Note code smells for future refactoring
+   - Fix critical issues (⭐⭐⭐⭐⭐) immediately
+   - Schedule high-priority issues (⭐⭐⭐⭐) for the sprint
 
+3. **Opportunistic Refactoring**
+   - Fix issues when you're already touching that code
+   - "Leave code better than you found it"
+   - Focus on readability and clarity
+
+### How to Refactor
+
+1. **Identify Code Smells**
+   - Use [code-quality-guide.mdc](code-quality-guide.mdc) to detect issues
+   - Prioritize by ROI (⭐⭐⭐⭐⭐ → ⭐⭐⭐⭐ → ⭐⭐⭐ → ⭐⭐ → ⭐)
+   - Consider the cost vs. benefit of each refactoring
+
+2. **Add Test Coverage**
+   - If tests are missing, add characterization tests first
+   - See [testing.mdc](testing.mdc) for testing strategy
+   - Ensure comprehensive coverage before changing code
+
+3. **Make Incremental Changes**
+   - Small, focused refactorings are safer
+   - Run tests after each change
+   - Commit frequently with clear messages
+
+4. **Verify Improvements**
+   - Ensure refactoring improves maintainability
+   - Check that code is more readable and understandable
+   - Validate that complexity has decreased
+
+---
+
+## Design Quality Principles
+
+### Maximize Cohesion
+- Keep related responsibilities together
+- Group code that changes for the same reason
+- Extract classes when responsibilities diverge
+
+### Minimize Coupling
+- Reduce interdependence between classes
+- Use interfaces to decouple dependencies
+- Prefer composition over inheritance
+- Avoid feature envy (excessive use of other classes)
+
+### Maintain Balance
+- Don't over-decompose into "ravioli code"
+- Keep abstractions at appropriate levels
+- Value readability over strict rule adherence
+
+---
 
 ## Anti-Patterns to Avoid
-- **Over-Engineering**: Don't apply rules that reduce readability
-- **Rule Worship**: Follow rules pragmatically, not blindly
-- **Ravioli Code**: Too many tiny classes hurt understanding
-- **Premature Optimization**: Focus on clarity first
+
+### Over-Engineering
+- Don't apply rules that reduce readability
+- Avoid creating complexity to satisfy guidelines
+- Keep solutions as simple as possible
+
+### Rule Worship
+- Follow rules pragmatically, not blindly
+- Use judgment based on context
+- Prioritize code clarity above all
+
+### Premature Optimization
+- Focus on clarity first, performance later
+- Don't optimize without measuring
+- Avoid speculative generality (YAGNI)
+
+### Ravioli Code
+- Too many tiny classes hurt understanding
+- Balance SRP with practical comprehension
+- Don't split classes just to satisfy line count rules

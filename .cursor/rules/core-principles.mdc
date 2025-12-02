@@ -57,31 +57,21 @@ These foundational principles guide all code quality decisions. For detailed det
 3. **Measure impact** - ensure refactoring improves maintainability
 4. **Maintain tests** - keep tests green throughout
 
+---
 
-## Quick Reference for Code Quality checks and their ROI
+## Application Strategy
 
-For ** Detailed Strategies** with ROI ratings, see `code-quality-guide.mdc`.
+For detailed code quality checks with ROI ratings and specific detection/fixing strategies, see **[code-quality-guide.mdc](code-quality-guide.mdc)**.
 
-### Immediate Actions (⭐⭐⭐⭐⭐)
-- **Delete dead code** immediately
-- **Wrap primitives** in domain classes
-- **Extract duplicated code** into shared methods
-- **Rename bad names** to express intent clearly
+### Priority Order
+1. **Critical Issues (⭐⭐⭐⭐⭐)** - Fix immediately during active development
+2. **High Priority (⭐⭐⭐⭐)** - Fix when touching related code
+3. **Medium Priority (⭐⭐⭐)** - Apply when beneficial during refactoring
+4. **Low Priority (⭐⭐)** - Address opportunistically
+5. **Questionable Rules (⭐)** - Avoid or use as warning signs only
 
-### Regular Actions (⭐⭐⭐⭐)
-- **Extract smaller methods** from long methods (< 18-25 lines) #Adapt to language and code base
-- **Split large classes** into focused classes (< 50 lines) #Adapt to language and code base
-- **Reduce parameter lists** (aim for 0-2 parameters)
-- **Format code** consistently
-
-### Opportunistic Actions (⭐⭐⭐)
-- **Return early** from methods to reduce nesting
-- **Extract methods** from deep conditionals
-- **Extract constants** from magic numbers and strings
-- **Encapsulate** where missing encapsulation is found
-- **Delete useless comments** that explain "what" instead of "why"
-
-### Avoid
-- **Clever implementations** over clear, readable code
-- **Premature optimization** or over-abstraction
-- **Following rules blindly** - use judgment for readability
+### Key Principles
+- Use judgment - rules are guidelines, not absolutes
+- Prefer clarity over cleverness
+- Avoid premature optimization or over-abstraction
+- Balance decomposition with readability
